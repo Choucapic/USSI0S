@@ -1,0 +1,10 @@
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+.vignette {
+    border-radius: 15px;
+    padding: 20px;
+    border: black 1px solid;
+}

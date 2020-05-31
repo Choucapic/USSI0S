@@ -1,13 +1,15 @@
 <?php
 
-require_once 'autoload.inc.php';
+require_once 'controller.php';
 
-$p = new WebPage("Index");
+ini_set('display_errors',1);
 
-$p->appendContent(<<<HTML
+if (isset($_GET["route"])) {
+    if ($_GET["route"] != "") {
 
-<h1> Site en construction </h1>
-HTML
-);
-
-echo $p->toHTML();
+    } else {
+        homePage();
+    }
+} else {
+    homePage();
+}

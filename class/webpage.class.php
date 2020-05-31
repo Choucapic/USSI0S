@@ -140,11 +140,22 @@ class WebPage {
   <head>
     <meta charset="utf-8">
     <title>{$this->title}</title>
+    <script
+  src="https://code.jquery.com/jquery-3.5.1.min.js"
+  integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+  crossorigin="anonymous"></script>
+  
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link href="//cdn.jsdelivr.net/npm/keyrune@latest/css/keyrune.css" rel="stylesheet" type="text/css" />
+    
+    <link rel="stylesheet" href="css/css.css">
    {$this->head}
   </head>
-    <body>
-        {$this->body()}
-    </body>
+        {$this->body()}    
 </html>
 HTML;
         return $html;
