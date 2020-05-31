@@ -138,12 +138,13 @@ class WebPage {
       <span class="white-text">{$_SESSION['pseudo']}</span>
       <span class="white-text email">{$_SESSION['mail']}</span>
     </div></li>
-    <li><a class="waves-effect" href="#!"><i class="ss ss-j20 ss-2x ss-foil ss-grad"></i> Mon profil</a></li>
+    <li><a class="waves-effect" href="https://www.workshop.thibault-lanier.fr/USSI0S/index.php?route=myprofile"><i class="ss ss-j20 ss-2x ss-foil ss-grad"></i> Mon profil</a></li>
     <li><a class="waves-effect" href="#!"><i class="ss ss-pz2 ss-2x ss-mythic ss-grad"></i> Ma collection</a></li>
     <li><div class="divider"></div></li>
-    <li><a class="subheader">Subheader</a></li>
     <li><a class="waves-effect red" href="index.php?route=disconnect"><i class="ss ss-mir ss-2x"></i>Déconnexion</a></li>
     </ul>
+
+<a href="#" data-target="slide-out" class="btn-floating btn-large waves-effect waves-light red sidenav-trigger hide-on-large-only"><i class="material-icons">add</i></a>
 HTML;
 
     }
@@ -175,6 +176,10 @@ HTML;
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
     <link href="//cdn.jsdelivr.net/npm/keyrune@latest/css/keyrune.css" rel="stylesheet" type="text/css" />
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="css/css.css">
