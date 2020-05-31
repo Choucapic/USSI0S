@@ -1,28 +1,29 @@
 <?php
 
-$p = new WebPage("Index");
+session_start();
+$p = new WebPage("Welcome");
 
 $p->appendContent(<<<HTML
   <body class="valign-wrapper">
     <div class="container center-align">
         <div class="row">
             <div class="col s5 hoverable vignette">
-                <form id="Login" name="Login">
+                <form id="Login" name="Login" action="index.php?route=signin" method="post">
                 <p>Connexion</p>
                 <div class="row">
                   <div class="input-field col s12">
-                     <input id="emailCo" type="email" class="validate" required>
+                     <input id="emailCo" name="emailCo" type="email" class="validate">
                        <label for="emailCo">Email</label>
                   </div>
                  </div>
                  <div class="row">
                   <div class="input-field col s12">
-                     <input id="passCo" type="password" class="validate" required>
+                     <input id="passCo" name="passCo" type="password" class="validate">
                        <label for="passCo">Mot de passe</label>
                   </div>
                  </div>
                  <div class ="row">
-                    <button class="btn waves-effect red disabled" id="connexionButton" type="submit" name="action">Submit
+                    <button class="btn waves-effect red disabled" id="connexionButton" type="submit">Submit
                         <i class="ss ss-sth"></i> 
                     </button>
                  </div>
@@ -32,17 +33,17 @@ $p->appendContent(<<<HTML
             <div class="col s1"></div>
             
             <div class="col s5 hoverable vignette">
-                <form id="Register" name="Register">
+                <form id="Register" name="Register" action="index.php?route=register" method="post">
                 <p>Inscription</p>
                 <div class="row">
                   <div class="input-field col s12">
-                     <input id="pseudo" type="text" class="validate" required>
+                     <input id="pseudo" name="pseudo" type="text" class="validate" required>
                        <label for="pseudo">Pseudonyme</label>
                   </div>
                 </div>
                 <div class="row">
                   <div class="input-field col s12">
-                     <input id="emailIns" type="email" class="validate" required>
+                     <input id="emailIns" name="emailIns" type="email" class="validate" required>
                        <label for="emailIns">Email</label>
                   </div>
                 </div>
@@ -54,7 +55,7 @@ $p->appendContent(<<<HTML
                 </div>
                 <div class="row">
                   <div class="input-field col s12">
-                     <input id="passIns" type="password" class="validate" required>
+                     <input id="passIns" name="passIns" type="password" class="validate" required>
                        <label for="passIns">Mot de passe</label>
                   </div>
                 </div>

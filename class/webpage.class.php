@@ -1,10 +1,14 @@
 <?php
 
+session_start();
+
 class WebPage {
     /**
      * @var string Texte compris entre <head> et </head>
      */
     private $head  = null ;
+
+    private $foot = null;
     /**
      * @var string Texte compris entre <title> et </title>
      */
@@ -96,7 +100,7 @@ class WebPage {
      * @return void
      */
     public function appendJs($js) {
-        $this->head .= '<script>'.$js.'</script>';
+        $this->foot .= '<script>'.$js.'</script>';
     }
 
     /**
@@ -119,8 +123,29 @@ class WebPage {
         $this->body .= $content;
     }
 
-    public function isConnected() {
-        return (isset($_SESSION['IDPERS']));
+    public function getNavbar() {
+
+        $banner = ($_SESSION['banner'] == '') ? "46184f97-d5c9-4a98-9fd9-e19057ce9b7e" : $_SESSION['banner'];
+        $icon = ($_SESSION['icon'] == '') ? "736b07e8-4eb4-492d-a323-3125823ae090" : $_SESSION['icon'];
+
+        return <<<HTML
+<ul id="slide-out" class="sidenav sidenav-fixed">
+     <li><div class="user-view">
+      <div class="background">
+        <img src="https://api.scryfall.com/cards/{$banner}?format=image&version=art_crop" style="width: 100%">
+      </div>
+      <img class="circle" src="https://api.scryfall.com/cards/{$icon}?format=image&version=art_crop">
+      <span class="white-text">{$_SESSION['pseudo']}</span>
+      <span class="white-text email">{$_SESSION['mail']}</span>
+    </div></li>
+    <li><a class="waves-effect" href="#!"><i class="ss ss-j20 ss-2x ss-foil ss-grad"></i> Mon profil</a></li>
+    <li><a class="waves-effect" href="#!"><i class="ss ss-pz2 ss-2x ss-mythic ss-grad"></i> Ma collection</a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="subheader">Subheader</a></li>
+    <li><a class="waves-effect red" href="index.php?route=disconnect"><i class="ss ss-mir ss-2x"></i>Déconnexion</a></li>
+    </ul>
+HTML;
+
     }
 
     /**
@@ -151,11 +176,13 @@ class WebPage {
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <link href="//cdn.jsdelivr.net/npm/keyrune@latest/css/keyrune.css" rel="stylesheet" type="text/css" />
-    
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="css/css.css">
    {$this->head}
   </head>
         {$this->body()}    
+        
+        {$this->foot}
 </html>
 HTML;
         return $html;

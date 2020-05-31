@@ -1,5 +1,6 @@
 <?php
-
+session_start();
+require_once 'autoload.inc.php';
 
 class user
 {
@@ -14,6 +15,8 @@ class user
     private $experience;
 
     private $profile_banner;
+
+    private $profile_icon;
 
     /**
      * @return mixed
@@ -103,6 +106,22 @@ class user
         $this->profile_banner = $profile_banner;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getProfileIcon()
+    {
+        return $this->profile_icon;
+    }
+
+    /**
+     * @param mixed $profile_icon
+     */
+    public function setProfileIcon($profile_icon): void
+    {
+        $this->profile_icon = $profile_icon;
+    }
+
     public static function createFromID($id) {
         $stmt = myPDO::getInstance()->prepare(<<<SQL
                                     SELECT * 
@@ -121,13 +140,25 @@ SQL
     }
 
     public static function register($pseudoR, $emailR, $passwordR) {
-        $pass = password_hash($passwordR, PASSWORD_DEFAULT);
+        $stmt = myPDO::getInstance()->prepare(<<<SQL
+                                    SELECT * 
+                                    FROM user
+                                    WHERE email = ? OR pseudo = ?;
+SQL
+        );
+        $stmt->execute(array($emailR, $pseudoR));
+        $user = $stmt -> fetch();
+        if (!$user) {
+            $pass = password_hash($passwordR, PASSWORD_DEFAULT);
         $stmt = myPDO::getInstance()->prepare(<<<SQL
                     INSERT INTO user (pseudo, email, password)
                     VALUES (?, ?, ?);
 SQL
         );
         return $stmt->execute(array($pseudoR, $emailR, $pass));
+        } else {
+            throw new Exception("Adresse mail et/ou pseudo déjà utilisés");
+        }
 }
 
     public static function signin($emailS, $passwordS) {
@@ -144,11 +175,15 @@ SQL
             return false;
         } else {
             if (password_verify($passwordS, $user->getPassword())) {
-                $_SESSION["id"] = $user->getId();
-                $_SESSION["pseudo"] = $user->getPseudo();
-                $_SESSION["experience"] = $user->getExperience();
+                $_SESSION['id'] = $user->getId();
+                $_SESSION['pseudo'] = $user->getPseudo();
+                $_SESSION['mail'] = $user->getEmail();
+                $_SESSION['experience'] = $user->getExperience();
+                $_SESSION['banner'] = $user->getProfileBanner();
+                $_SESSION['icon'] = $user->getProfileIcon();
+                return true;
             } else {
-                return false;
+                throw new Exception("mot de passe invalide");
             }
         }
     }
