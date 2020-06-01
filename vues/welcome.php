@@ -92,7 +92,7 @@ if (isset($verifDone)) {
 }
 if (isset($text)) {
         $p->appendJs(<<<JS
-    alert("{$text}");
+    alert("{$text}"); 
 JS
 );
     }

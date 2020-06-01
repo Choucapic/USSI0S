@@ -33,7 +33,7 @@ $p->appendContent(<<<HTML
     
     <div class="main center-align">
         <div class="row">
-            <h3>Collection de {$pseudo}</h3>
+            <h3>Collection de {$pseudo}</h3> 
         </div>
     </div>
 

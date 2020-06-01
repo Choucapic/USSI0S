@@ -101,7 +101,6 @@ function deleteAccount($pass) {
     $user->delete($pass);
     session_unset();
     session_destroy();
-<<<<<<< HEAD
     header("Location: https://www.workshop.thibault-lanier.fr/USSI0S/");
 }
 
@@ -117,7 +116,4 @@ function verifyUser($code) {
 
 function myCollection() {
     require_once "vues/myCollection.php";
-=======
-    require_once 'vues/home.php';
->>>>>>> b81656bb6c2b21e1c93b2dfdbce1cb070a8ca50d
 }
