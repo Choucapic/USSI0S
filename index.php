@@ -95,6 +95,7 @@ try {
                         header("Location: https://www.workshop.thibault-lanier.fr/USSI0S/");
                     }
                     break;
+<<<<<<< HEAD
                 case "verify" :
                     if (isset($_GET['code'])) {
                         if ($_GET['code'] != "") {
@@ -113,6 +114,8 @@ try {
                         home();
                     }
                     break;
+=======
+>>>>>>> b81656bb6c2b21e1c93b2dfdbce1cb070a8ca50d
                 default:
                     if (isset($_SESSION["id"]) && $_SESSION["id"] != "") {
                         home();

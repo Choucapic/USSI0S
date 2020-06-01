@@ -140,7 +140,11 @@ class WebPage {
       <span class="white-text email" style="text-shadow: 1px 1px 2px black, 0 0 1em black, 0 0 0.2em black;">{$_SESSION['mail']}</span>
     </div></li>
     <li><a class="waves-effect" href="https://www.workshop.thibault-lanier.fr/USSI0S/index.php?route=myprofile"><i class="ss ss-j20 ss-2x ss-foil ss-grad"></i> Mon profil</a></li>
+<<<<<<< HEAD
     <li><a class="waves-effect" href="https://www.workshop.thibault-lanier.fr/USSI0S/index.php?route=mycollection"><i class="ss ss-pz2 ss-2x ss-mythic ss-grad"></i> Ma collection</a></li>
+=======
+    <li><a class="waves-effect" href="#!"><i class="ss ss-pz2 ss-2x ss-mythic ss-grad"></i> Ma collection</a></li>
+>>>>>>> b81656bb6c2b21e1c93b2dfdbce1cb070a8ca50d
     <li><div class="divider"></div></li>
     <li><a class="waves-effect red" href="index.php?route=disconnect"><i class="ss ss-mir ss-2x"></i>Déconnexion</a></li>
     </ul>
@@ -182,10 +186,14 @@ HTML;
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<<<<<<< HEAD
 <script src="js/jqueryui.js"></script>
 
 
     
+=======
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+>>>>>>> b81656bb6c2b21e1c93b2dfdbce1cb070a8ca50d
 
     <link href="//cdn.jsdelivr.net/npm/keyrune@latest/css/keyrune.css" rel="stylesheet" type="text/css" />
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">

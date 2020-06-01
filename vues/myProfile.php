@@ -3,8 +3,11 @@
 session_start();
 $p = new WebPage("My profile");
 
+<<<<<<< HEAD
 $pseudo = htmlspecialchars($_SESSION['pseudo']);
 
+=======
+>>>>>>> b81656bb6c2b21e1c93b2dfdbce1cb070a8ca50d
 $p->appendCss(<<<CSS
     .main {
       padding-left: 300px;
@@ -32,6 +35,7 @@ $(document).ready(function(){
         select: function( event, ui ) {
             $("#bannerButton").removeClass("disabled");
         }
+<<<<<<< HEAD
     }).autocomplete().data("uiAutocomplete")._renderItem = function(ul, item) { 
          var script = document.createElement("script");
          var size = "200px";
@@ -40,6 +44,9 @@ $(document).ready(function(){
          return $("<li>") 
          .append(item.label + '<i class="ss ss-van" data-position="right" id="' + item.uuid + '"></i>').append(script)
          .appendTo(ul); };
+=======
+    });
+>>>>>>> b81656bb6c2b21e1c93b2dfdbce1cb070a8ca50d
      
      $("#cardNameIcon").autocomplete({
         source: "class/autocompleteImageSearch.php",
@@ -47,6 +54,7 @@ $(document).ready(function(){
         select: function( event, ui ) {
             $("#iconButton").removeClass("disabled");
         }
+<<<<<<< HEAD
         }).autocomplete().data("uiAutocomplete")._renderItem = function(ul, item) { 
          var script = document.createElement("script");
          var size = "200px";
@@ -55,6 +63,9 @@ $(document).ready(function(){
          return $("<li>") 
          .append(item.label + '<i class="ss ss-van" data-position="right" id="' + item.uuid + '"></i>').append(script)
          .appendTo(ul); };
+=======
+        });
+>>>>>>> b81656bb6c2b21e1c93b2dfdbce1cb070a8ca50d
   });
 
  $("form#ChangePseudo input").change(function() {
@@ -116,11 +127,19 @@ $p->appendContent(<<<HTML
 </div>
 <div class="container center-align">
 <div class="row">
+<<<<<<< HEAD
 <h2 style="margin-top: 0px">Profil de {$pseudo}</h2>
 
   <ul class="collapsible col s12 m12 l6" data-collapsible="accordion">
     <li>
       <div class="collapsible-header waves-effect"><p>Pseudo : <b>{$pseudo}</b></p></div>
+=======
+<h2 style="margin-top: 0px">Profil de {$_SESSION['pseudo']}</h2>
+
+  <ul class="collapsible col s12 m12 l6" data-collapsible="accordion">
+    <li>
+      <div class="collapsible-header waves-effect"><p>Pseudo : <b>{$_SESSION['pseudo']}</b></p></div>
+>>>>>>> b81656bb6c2b21e1c93b2dfdbce1cb070a8ca50d
       <div class="collapsible-body">
       <p>Procéder au changement de son pseudo :</p>
       <form id="ChangePseudo" name="ChangePseudo" action="index.php?route=changePseudo" method="post">

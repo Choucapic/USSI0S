@@ -376,14 +376,20 @@ SQL
     }
 
     public static function getImageName($image) {
+<<<<<<< HEAD
         if (isset($_SESSION[$image]) && $_SESSION[$image] != "") {
             $stmt = myPDO::getInstance()->prepare(<<<SQL
+=======
+
+        $stmt = myPDO::getInstance()->prepare(<<<SQL
+>>>>>>> b81656bb6c2b21e1c93b2dfdbce1cb070a8ca50d
                                     SELECT foreign_data.name as name
                                     FROM cards, foreign_data
                                     WHERE cards.uuid = foreign_data.uuid
                                     AND cards.scryfallId = ?
                                     AND language = "French";
 SQL
+<<<<<<< HEAD
             );
             $stmt->execute(array($_SESSION[$image]));
             if ($name = $stmt->fetch()) {
@@ -410,4 +416,15 @@ SQL
         return $stmt->execute(array($code));
     }
 
+=======
+        );
+        $stmt->execute(array($_SESSION[$image]));
+        if ($name = $stmt -> fetch()) {
+            return $name['name'];
+        } else {
+            throw new Exception("Problème lors de la récupération du nom de l'image");
+        }
+    }
+
+>>>>>>> b81656bb6c2b21e1c93b2dfdbce1cb070a8ca50d
 }
