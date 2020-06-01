@@ -110,11 +110,72 @@ try {
                     if (isset($_SESSION["id"]) && $_SESSION["id"] != "") {
                         myCollection();
                     } else {
-                        home();
+                        welcomePage();
+                    }
+                    break;
+                case "addCard" :
+                    if (isset($_SESSION["id"]) && $_SESSION["id"] != "") {
+                        if (isset($_POST['cardName']) && isset($_POST['extension']) && isset($_POST['quantity'])) {
+                            if ($_POST['cardName'] != "" && $_POST['extension'] != "" && $_POST['quantity'] != "") {
+                                $isFoil = (isset($_POST['isFoil']) ? $_POST['isFoil'] : "No");
+                                addCard($_POST['cardName'], $_POST['extension'], $isFoil, $_POST['quantity']);
+                            } else {
+                                throw new Exception("Paramètres vides pour l'ajout de carte");
+                            }
+                        }else {
+                            throw new Exception("Paramètres manquants pour l'ajout de carte");
+                        }
+                    } else {
+                        welcomePage();
+                    }
+                    break;
+                case "plusCard" :
+                    if (isset($_SESSION["id"]) && $_SESSION["id"] != "") {
+                        if (isset($_GET['id'])) {
+                            if ($_GET['id'] != "") {
+                                plusCard($_GET['id']);
+                            } else {
+                                throw new Exception("Paramètres vides pour l'ajout de carte");
+                            }
+                        }else {
+                            throw new Exception("Paramètres manquants pour l'ajout de carte");
+                        }
+                    } else {
+                        welcomePage();
+                    }
+                    break;
+                case "minusCard" :
+                    if (isset($_SESSION["id"]) && $_SESSION["id"] != "") {
+                        if (isset($_GET['id'])) {
+                            if ($_GET['id'] != "") {
+                                minusCard($_GET['id']);
+                            } else {
+                                throw new Exception("Paramètres vides pour la diminution de carte");
+                            }
+                        }else {
+                            throw new Exception("Paramètres manquants pour la diminution de carte");
+                        }
+                    } else {
+                        welcomePage();
+                    }
+                    break;
+                case "deleteCard" :
+                    if (isset($_SESSION["id"]) && $_SESSION["id"] != "") {
+                        if (isset($_GET['id'])) {
+                            if ($_GET['id'] != "") {
+                                deleteCard($_GET['id']);
+                            } else {
+                                throw new Exception("Paramètres vides pour la suppression de carte");
+                            }
+                        }else {
+                            throw new Exception("Paramètres manquants pour la suppression de carte");
+                        }
+                    } else {
+                        welcomePage();
                     }
                     break;
                 default:
-                    if (isset($_SESSION["id"]) && $_SESSION["id"] != "") { 
+                    if (isset($_SESSION["id"]) && $_SESSION["id"] != "") {
                         home();
                     } else {
                         welcomePage();

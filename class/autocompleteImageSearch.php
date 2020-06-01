@@ -4,11 +4,10 @@ require_once "autoload.inc.php";
 
 $nomCarte = $_GET['term'];
 $card = true;
-$count = 5;
 $dataArray = array();
 
 $stmt = myPDO::getInstance()->prepare(<<<SQL
-                                    SELECT cards.uuid as uuid, foreign_data.name as name, scryfallId as image
+                                    SELECT cards.uuid as uuid, foreign_data.name as name, scryfallId as image, printings
                                     FROM cards, foreign_data
                                     WHERE cards.uuid = foreign_data.uuid 
                                     AND foreign_data.language = "French"
@@ -20,11 +19,12 @@ SQL
 $stmt->setFetchMode(PDO::FETCH_ASSOC);
 $stmt->execute();
 
-while (($card = $stmt->fetch()) != false && $count >= 0) {
+while (($card = $stmt->fetch()) != false) {
     $data["value"] = $card["name"];
     $data["label"] = $card["name"];
     $data["uuid"] = $card["uuid"];
     $data["image"] = $card["image"];
+    $data["printings"] = $card["printings"];
     array_push($dataArray, $data);
 }
 

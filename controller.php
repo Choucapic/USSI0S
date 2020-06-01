@@ -115,5 +115,37 @@ function verifyUser($code) {
 }
 
 function myCollection() {
+    require_once "class/user.php";
+    $cardsNumber = user::getCardsNumber();
+    $collectionPrice = user::getCollectionPrice();
+    $tableCollection = user::tableCollection(0);
     require_once "vues/myCollection.php";
+}
+
+function addCard($uuid, $setName, $isFoil, $quantity) {
+    require_once "class/user.php";
+    if (user::addCard($uuid, $setName, $isFoil, $quantity)) {
+        myCollection();
+    }
+}
+
+function plusCard($uuid) {
+    require_once "class/user.php";
+    if (user::plusCard($uuid)) {
+        myCollection();
+    }
+}
+
+function minusCard($uuid) {
+    require_once "class/user.php";
+    if (user::minusCard($uuid)) {
+        myCollection();
+    }
+}
+
+function deleteCard($uuid) {
+    require_once "class/user.php";
+    if (user::deleteCard($uuid)) {
+        myCollection();
+    }
 }
