@@ -411,8 +411,10 @@ SQL
     }
 
     public static function addCard($uuidC, $setName, $isFoil, $quantity) {
+        $quantity = intval($quantity);
+        if (!(is_int($quantity) and $quantity > 0)) throw new Exception("La quantité doit être un nombre entier positif");
         $stmt = myPDO::getInstance()->prepare(<<<SQL
-                                    SELECT cards.uuid as uuid
+                                    SELECT cards.uuid as uuid, hasFoil, hasNonFoil
                                     FROM cards, sets
                                     WHERE cards.setCode = sets.code AND sets.name = ?
                                     AND cards.name = (SELECT name FROM cards WHERE uuid = ?);
@@ -423,6 +425,9 @@ SQL
             throw new Exception("Erreur dans la récupération de la carte");
         } else {
             $isFoil = ($isFoil == "Yes") ? 1 : 0;
+            if (!(($isFoil == 1 && $uuid['hasFoil'] == 1) || ($isFoil == 1 && $uuid['hasNonFoil']) == 1)) {
+                throw new Exception("Le paramètre foil de la carte que vous essayez d'insérer n'est pas valide");
+            }
             $stmt = myPDO::getInstance()->prepare(<<<SQL
                                     INSERT INTO collection (idUser, UUIDCard, number, isFoil)
                                     values (?, ?, ?, ?);
