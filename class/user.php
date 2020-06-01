@@ -18,12 +18,30 @@ class user
 
     private $profile_icon;
 
+    private $verified;
+
     /**
      * @return mixed
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVerified()
+    {
+        return $this->verified;
+    }
+
+    /**
+     * @param mixed $verified
+     */
+    public function setVerified($verified): void
+    {
+        $this->verified = $verified;
     }
 
     /**
@@ -37,9 +55,37 @@ class user
     /**
      * @param mixed $pseudo
      */
-    public function setPseudo($pseudo): void
+    public function setPseudo($pseudo, $pass)
     {
-        $this->pseudo = $pseudo;
+        $stmt = myPDO::getInstance()->prepare(<<<SQL
+                                    SELECT * 
+                                    FROM user
+                                    WHERE id = ?;
+SQL
+        );
+        $stmt->setFetchMode(PDO::FETCH_CLASS, __CLASS__);
+        $stmt->execute(array($_SESSION['id']));
+        $user = $stmt -> fetch();
+        if(!$user){
+            throw new Exception("utilisateur inexistant");
+        } else {
+            if (password_verify($pass, $user->getPassword())) {
+                $stmt = myPDO::getInstance()->prepare(<<<SQL
+                                    UPDATE user
+                                    SET pseudo = ?
+                                    WHERE id = ?;
+SQL
+                );
+                if ($stmt->execute(array($pseudo, $_SESSION['id']))) {
+                    $_SESSION['pseudo'] = $pseudo;
+                    return true;
+                } else {
+                    throw new Exception("Erreur dans la modification du pseudo");
+                }
+            } else {
+                throw new Exception("mot de passe invalide");
+            }
+        }
     }
 
     /**
@@ -53,9 +99,37 @@ class user
     /**
      * @param mixed $email
      */
-    public function setEmail($email): void
+    public function setEmail($email, $pass)
     {
-        $this->email = $email;
+        $stmt = myPDO::getInstance()->prepare(<<<SQL
+                                    SELECT * 
+                                    FROM user
+                                    WHERE id = ?;
+SQL
+        );
+        $stmt->setFetchMode(PDO::FETCH_CLASS, __CLASS__);
+        $stmt->execute(array($_SESSION['id']));
+        $user = $stmt -> fetch();
+        if(!$user){
+            throw new Exception("utilisateur inexistant");
+        } else {
+            if (password_verify($pass, $user->getPassword())) {
+                $stmt = myPDO::getInstance()->prepare(<<<SQL
+                                    UPDATE user
+                                    SET email = ?
+                                    WHERE id = ?;
+SQL
+                );
+                if ($stmt->execute(array($email, $_SESSION['id']))) {
+                    $_SESSION['mail'] = $email;
+                    return true;
+                } else {
+                    throw new Exception("Erreur dans la modification de l'email");
+                }
+            } else {
+                throw new Exception("mot de passe invalide");
+            }
+        }
     }
 
     /**
@@ -69,9 +143,36 @@ class user
     /**
      * @param mixed $password
      */
-    public function setPassword($password): void
+    public function setPassword($old, $new)
     {
-        $this->password = $password;
+        $stmt = myPDO::getInstance()->prepare(<<<SQL
+                                    SELECT * 
+                                    FROM user
+                                    WHERE id = ?;
+SQL
+        );
+        $stmt->setFetchMode(PDO::FETCH_CLASS, __CLASS__);
+        $stmt->execute(array($_SESSION['id']));
+        $user = $stmt -> fetch();
+        if(!$user){
+            throw new Exception("utilisateur inexistant");
+        } else {
+            if (password_verify($old, $user->getPassword())) {
+                $stmt = myPDO::getInstance()->prepare(<<<SQL
+                                    UPDATE user
+                                    SET password = ?
+                                    WHERE id = ?;
+SQL
+                );
+                if ($stmt->execute(array(password_hash($new, PASSWORD_DEFAULT), $_SESSION['id']))) {
+                    return true;
+                } else {
+                    throw new Exception("Erreur dans la modification du mot de passe");
+                }
+            } else {
+                throw new Exception("mot de passe invalide");
+            }
+        }
     }
 
     /**
@@ -99,11 +200,34 @@ class user
     }
 
     /**
-     * @param mixed $profile_banner
+     * @param mixed $cardName
      */
-    public function setProfileBanner($profile_banner): void
+    public function setProfileBanner($cardName)
     {
-        $this->profile_banner = $profile_banner;
+        $stmt = myPDO::getInstance()->prepare(<<<SQL
+                                    SELECT scryfallId
+                                    FROM cards, foreign_data
+                                    WHERE cards.uuid = foreign_data.uuid
+                                    AND foreign_data.name = ?;
+SQL
+        );
+        $stmt->execute(array($cardName));
+        if ($row = $stmt->fetch()) {
+            $stmt = myPDO::getInstance()->prepare(<<<SQL
+                        UPDATE user 
+                        SET profile_banner = ?
+                        WHERE id = ?
+SQL
+);
+            if ($stmt->execute(array($row['scryfallId'], $_SESSION['id']))) {
+                $_SESSION['banner'] = $row['scryfallId'];
+                return true;
+            } else {
+                throw new Exception("Erreur dans la sauvegarde de la bannière");
+            }
+        } else {
+            throw new Exception("Image introuvable");
+        }
     }
 
     /**
@@ -115,11 +239,34 @@ class user
     }
 
     /**
-     * @param mixed $profile_icon
+     * @param mixed $cardName
      */
-    public function setProfileIcon($profile_icon): void
+    public function setProfileIcon($cardName)
     {
-        $this->profile_icon = $profile_icon;
+        $stmt = myPDO::getInstance()->prepare(<<<SQL
+                                    SELECT scryfallId
+                                    FROM cards, foreign_data
+                                    WHERE cards.uuid = foreign_data.uuid
+                                    AND foreign_data.name = ?;
+SQL
+        );
+        $stmt->execute(array($cardName));
+        if ($row = $stmt->fetch()) {
+            $stmt = myPDO::getInstance()->prepare(<<<SQL
+                        UPDATE user 
+                        SET profile_icon = ?
+                        WHERE id = ?
+SQL
+            );
+            if ($stmt->execute(array($row['scryfallId'], $_SESSION['id']))) {
+                $_SESSION['icon'] = $row['scryfallId'];
+                return true;
+            } else {
+                throw new Exception("Erreur dans la sauvegarde de l'icone");
+            }
+        } else {
+            throw new Exception("Image introuvable");
+        }
     }
 
     public static function createFromID($id) {
@@ -151,11 +298,16 @@ SQL
         if (!$user) {
             $pass = password_hash($passwordR, PASSWORD_DEFAULT);
         $stmt = myPDO::getInstance()->prepare(<<<SQL
-                    INSERT INTO user (pseudo, email, password)
-                    VALUES (?, ?, ?);
+                    INSERT INTO user (pseudo, email, password, verified)
+                    VALUES (?, ?, ?, ?);
 SQL
         );
-        return $stmt->execute(array($pseudoR, $emailR, $pass));
+        $verify = str_shuffle(md5($pseudoR));
+        if ($stmt->execute(array($pseudoR, $emailR, $pass, $verify))) {
+            return $verify;
+        } else {
+            throw new Exception("Problème d'insertion de l'utilisateur");
+        }
         } else {
             throw new Exception("Adresse mail et/ou pseudo déjà utilisés");
         }
@@ -175,17 +327,87 @@ SQL
             return false;
         } else {
             if (password_verify($passwordS, $user->getPassword())) {
-                $_SESSION['id'] = $user->getId();
-                $_SESSION['pseudo'] = $user->getPseudo();
-                $_SESSION['mail'] = $user->getEmail();
-                $_SESSION['experience'] = $user->getExperience();
-                $_SESSION['banner'] = $user->getProfileBanner();
-                $_SESSION['icon'] = $user->getProfileIcon();
-                return true;
+                if ($user->getVerified() == "1") {
+                    $_SESSION['id'] = $user->getId();
+                    $_SESSION['pseudo'] = $user->getPseudo();
+                    $_SESSION['mail'] = $user->getEmail();
+                    $_SESSION['experience'] = $user->getExperience();
+                    $_SESSION['banner'] = $user->getProfileBanner();
+                    $_SESSION['icon'] = $user->getProfileIcon();
+                    return true;
+                } else {
+                    throw new Exception("Compte non vérifié");
+                }
             } else {
                 throw new Exception("mot de passe invalide");
             }
         }
+    }
+
+    public function delete($pass) {
+        $stmt = myPDO::getInstance()->prepare(<<<SQL
+                                    SELECT * 
+                                    FROM user
+                                    WHERE id = ?;
+SQL
+        );
+        $stmt->setFetchMode(PDO::FETCH_CLASS, __CLASS__);
+        $stmt->execute(array($_SESSION['id']));
+        $user = $stmt -> fetch();
+        if(!$user){
+            throw new Exception("utilisateur inexistant");
+        } else {
+            if (password_verify($pass, $user->getPassword())) {
+                $stmt = myPDO::getInstance()->prepare(<<<SQL
+                                    DELETE
+                                    FROM user
+                                    WHERE id = ?;
+SQL
+                );
+                if ($stmt->execute(array($_SESSION['id']))) {
+                    return true;
+                } else {
+                    throw new Exception("Erreur dans la suppression du compte");
+                }
+            } else {
+                throw new Exception("Mauvais mot de passe");
+            }
+        }
+    }
+
+    public static function getImageName($image) {
+        if (isset($_SESSION[$image]) && $_SESSION[$image] != "") {
+            $stmt = myPDO::getInstance()->prepare(<<<SQL
+                                    SELECT foreign_data.name as name
+                                    FROM cards, foreign_data
+                                    WHERE cards.uuid = foreign_data.uuid
+                                    AND cards.scryfallId = ?
+                                    AND language = "French";
+SQL
+            );
+            $stmt->execute(array($_SESSION[$image]));
+            if ($name = $stmt->fetch()) {
+                return $name['name'];
+            } else {
+                throw new Exception("Problème lors de la récupération du nom de l'image");
+            }
+        } else {
+            if ($image == "banner") {
+                return "Abondance";
+            } else {
+                return "Jace, architecte des pensées";
+            }
+        }
+    }
+
+    public static function verify($code) {
+        $stmt = myPDO::getInstance()->prepare(<<<SQL
+                                    UPDATE user
+                                    SET verified = '1'
+                                    WHERE verified = ?;
+SQL
+        );
+        return $stmt->execute(array($code));
     }
 
 }

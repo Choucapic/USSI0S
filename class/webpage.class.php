@@ -127,6 +127,7 @@ class WebPage {
 
         $banner = ($_SESSION['banner'] == '') ? "46184f97-d5c9-4a98-9fd9-e19057ce9b7e" : $_SESSION['banner'];
         $icon = ($_SESSION['icon'] == '') ? "736b07e8-4eb4-492d-a323-3125823ae090" : $_SESSION['icon'];
+        $pseudo = htmlspecialchars($_SESSION['pseudo']);
 
         return <<<HTML
 <ul id="slide-out" class="sidenav sidenav-fixed">
@@ -135,15 +136,16 @@ class WebPage {
         <img src="https://api.scryfall.com/cards/{$banner}?format=image&version=art_crop" style="width: 100%">
       </div>
       <img class="circle" src="https://api.scryfall.com/cards/{$icon}?format=image&version=art_crop">
-      <span class="white-text">{$_SESSION['pseudo']}</span>
-      <span class="white-text email">{$_SESSION['mail']}</span>
+      <span class="white-text" style="text-shadow: 1px 1px 2px black, 0 0 1em black, 0 0 0.2em black;">{$pseudo}</span>
+      <span class="white-text email" style="text-shadow: 1px 1px 2px black, 0 0 1em black, 0 0 0.2em black;">{$_SESSION['mail']}</span>
     </div></li>
-    <li><a class="waves-effect" href="#!"><i class="ss ss-j20 ss-2x ss-foil ss-grad"></i> Mon profil</a></li>
-    <li><a class="waves-effect" href="#!"><i class="ss ss-pz2 ss-2x ss-mythic ss-grad"></i> Ma collection</a></li>
+    <li><a class="waves-effect" href="https://www.workshop.thibault-lanier.fr/USSI0S/index.php?route=myprofile"><i class="ss ss-j20 ss-2x ss-foil ss-grad"></i> Mon profil</a></li>
+    <li><a class="waves-effect" href="https://www.workshop.thibault-lanier.fr/USSI0S/index.php?route=mycollection"><i class="ss ss-pz2 ss-2x ss-mythic ss-grad"></i> Ma collection</a></li>
     <li><div class="divider"></div></li>
-    <li><a class="subheader">Subheader</a></li>
     <li><a class="waves-effect red" href="index.php?route=disconnect"><i class="ss ss-mir ss-2x"></i>Déconnexion</a></li>
     </ul>
+
+<a href="#" data-target="slide-out" class="btn-floating btn-large waves-effect waves-light red sidenav-trigger hide-on-large-only"><i class="material-icons">add</i></a>
 HTML;
 
     }
@@ -170,11 +172,21 @@ HTML;
   integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
   crossorigin="anonymous"></script>
   
+      <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="js/jqueryui.js"></script>
+
+
+    
+
     <link href="//cdn.jsdelivr.net/npm/keyrune@latest/css/keyrune.css" rel="stylesheet" type="text/css" />
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="css/css.css">

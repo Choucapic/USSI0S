@@ -80,6 +80,23 @@ $p->appendContent(<<<HTML
 HTML
 );
 
+if (isset($verifSent)) {
+    if ($verifSent != "") {
+        $text = "Un mail vient de vous être envoyé afin de vérifier votre compte";
+    }
+}
+if (isset($verifDone)) {
+    if ($verifDone != "") {
+        $text = "Votre compte est validé ! Vous pouvez vous connecter";
+    }
+}
+if (isset($text)) {
+        $p->appendJs(<<<JS
+    alert("{$text}");
+JS
+);
+    }
+
 $p->appendJs(<<<JS
 $("form#Register input").change(function() {
         var mails = false;

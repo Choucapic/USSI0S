@@ -45,6 +45,74 @@ try {
                     break;
                 case "disconnect" :
                     disconnection();
+                    break;
+                case "myprofile" :
+                    if (isset($_SESSION["id"]) && $_SESSION["id"] != "") {
+                        myprofile();
+                    } else {
+                        header("Location: https://www.workshop.thibault-lanier.fr/USSI0S/");
+                    }
+                    break;
+                case "changePseudo" :
+                    if (isset($_SESSION["id"]) && $_SESSION["id"] != "") {
+                        changePseudo($_POST["newPseudo"], $_POST['passPseudo']);
+                    } else {
+                        header("Location: https://www.workshop.thibault-lanier.fr/USSI0S/");
+                    }
+                    break;
+                case "changeMail" :
+                    if (isset($_SESSION["id"]) && $_SESSION["id"] != "") {
+                        changeMail($_POST["newMail"], $_POST['passMail']);
+                    } else {
+                        header("Location: https://www.workshop.thibault-lanier.fr/USSI0S/");
+                    }
+                    break;
+                case "changePass" :
+                    if (isset($_SESSION["id"]) && $_SESSION["id"] != "") {
+                        changePass($_POST["passOld"], $_POST['passNew']);
+                    } else {
+                        header("Location: https://www.workshop.thibault-lanier.fr/USSI0S/");
+                    }
+                    break;
+                case "changeBanner" :
+                    if (isset($_SESSION["id"]) && $_SESSION["id"] != "") {
+                        changeBanner($_POST["cardNameBanner"]);
+                    } else {
+                        header("Location: https://www.workshop.thibault-lanier.fr/USSI0S/");
+                    }
+                    break;
+                case "changeIcon" :
+                    if (isset($_SESSION["id"]) && $_SESSION["id"] != "") {
+                        changeIcon($_POST["cardNameIcon"]);
+                    } else {
+                        header("Location: https://www.workshop.thibault-lanier.fr/USSI0S/");
+                    }
+                    break;
+                case "deleteAccount" :
+                    if (isset($_SESSION["id"]) && $_SESSION["id"] != "") {
+                        deleteAccount($_POST["passAccount"]);
+                    } else {
+                        header("Location: https://www.workshop.thibault-lanier.fr/USSI0S/");
+                    }
+                    break;
+                case "verify" :
+                    if (isset($_GET['code'])) {
+                        if ($_GET['code'] != "") {
+                            verifyUser($_GET['code']);
+                        } else {
+                            throw new Exception("Problème de code de vérification");
+                        }
+                    } else {
+                        throw new Exception("Problème de code de vérification");
+                    }
+                    break;
+                case "mycollection" :
+                    if (isset($_SESSION["id"]) && $_SESSION["id"] != "") {
+                        myCollection();
+                    } else {
+                        home();
+                    }
+                    break;
                 default:
                     if (isset($_SESSION["id"]) && $_SESSION["id"] != "") {
                         home();

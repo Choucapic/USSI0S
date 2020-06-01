@@ -2,6 +2,7 @@
 
 session_start();
 $p = new WebPage("Home");
+$pseudo = htmlspecialchars($_SESSION['pseudo']);
 
 $p->appendCss(<<<CSS
     .main {
@@ -24,8 +25,6 @@ $(document).ready(function(){
 JS
 );
 
-$pseudo = htmlspecialchars($_SESSION['pseudo']);
-
 $p->appendContent(<<<HTML
 
 <body>
@@ -34,8 +33,7 @@ $p->appendContent(<<<HTML
     
     <div class="main center-align">
         <div class="row">
-            <h1>Bonjour {$pseudo} !</h1>
-            <h3>Choisissez votre rubrique dans le menu à gauche</h3>
+            <h3>Collection de {$pseudo}</h3>
         </div>
     </div>
 
