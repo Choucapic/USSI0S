@@ -18,7 +18,7 @@ $p->appendContent(<<<HTML
                  </div>
                  <div class="row">
                   <div class="input-field col s12">
-                     <input id="passCo" name="passCo" type="password" class="validate">
+                     <input id="passCo" name="passCo" type="password" minlength="8" class="validate">
                        <label for="passCo">Mot de passe</label>
                   </div>
                  </div>
@@ -55,13 +55,13 @@ $p->appendContent(<<<HTML
                 </div>
                 <div class="row">
                   <div class="input-field col s12">
-                     <input id="passIns" name="passIns" type="password" class="validate" required>
+                     <input id="passIns" name="passIns" type="password" class="validate" minlength="8" required>
                        <label for="passIns">Mot de passe</label>
                   </div>
                 </div>
                 <div class="row">
                   <div class="input-field col s12">
-                     <input id="passInsVerif" type="password" class="validate" required>
+                     <input id="passInsVerif" type="password" class="validate" minlength="8" required>
                        <label for="passInsVerif">Verifier le mot de passe</label>
                   </div>
                 </div>

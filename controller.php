@@ -14,11 +14,19 @@ function signinUser($emailS, $passwordS) {
 
 function registerUser($pseudoR, $emailR, $passwordR) {
     include 'class/user.php';
+    if (!filter_var($emailR, FILTER_VALIDATE_EMAIL)) {
+        throw new Exception("Adresse mail invalide");
+    }
+    if (strlen($passwordR) < 8) {
+        throw new Exception("Mot de passe en dessous de 8 caractères");
+    }
     $verify = (User::register($pseudoR, $emailR, $passwordR));
     if ($verify != null) {
         require_once 'class/PHPMailer.class.php';
         $pseudo = htmlspecialchars($pseudoR);
         $mail = new PHPMailer();
+        $mail->CharSet = "UTF-8";
+        $mail->Encoding = 'base64';
         $mail->addAddress($emailR);
         $mail->isHTML(true);
         $mail->Subject = 'Vérification de votre compte';
