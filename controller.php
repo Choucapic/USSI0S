@@ -20,8 +20,8 @@ function registerUser($pseudoR, $emailR, $passwordR) {
     if (strlen($passwordR) < 8) {
         throw new Exception("Mot de passe en dessous de 8 caractères");
     }
-    $verify = (User::register($pseudoR, $emailR, $passwordR));
-    if ($verify != null) {
+    $user = (User::register($pseudoR, $emailR, $passwordR));
+    if (($verify = $user->getVerified()) != null) {
         require_once 'class/PHPMailer.class.php';
         $pseudo = htmlspecialchars($pseudoR);
         $mail = new PHPMailer();
@@ -37,6 +37,7 @@ function registerUser($pseudoR, $emailR, $passwordR) {
 HTML
         ;
         if(!$mail->send()) {
+            user::delete($user->getId(), $passwordR);
             throw new Exception("Problème de mail : " .$mail->ErrorInfo);
         } else {
             $verifSent = 'verificationSent';
@@ -105,8 +106,7 @@ function changeIcon($cardName) {
 
 function deleteAccount($pass) {
     require_once "class/user.php";
-    $user = user::createFromID($_SESSION['id']);
-    $user->delete($pass);
+    user::delete($_SESSION['id'], $pass);
     session_unset();
     session_destroy();
     header("Location: https://www.workshop.thibault-lanier.fr/USSI0S/");

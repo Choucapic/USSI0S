@@ -304,7 +304,19 @@ SQL
         );
         $verify = str_shuffle(md5($pseudoR));
         if ($stmt->execute(array($pseudoR, $emailR, $pass, $verify))) {
-            return $verify;
+            $stmt = myPDO::getInstance()->prepare(<<<SQL
+                                    SELECT * 
+                                    FROM user
+                                    WHERE email = ?;
+SQL
+            );
+            $stmt->setFetchMode(PDO::FETCH_CLASS, __CLASS__);
+            $stmt->execute(array($emailR));
+            if ($user = $stmt -> fetch()) {
+                return $user;
+            } else {
+                throw new Exception("Problème d'insertion de l'utilisateur");
+            }
         } else {
             throw new Exception("Problème d'insertion de l'utilisateur");
         }
@@ -344,7 +356,8 @@ SQL
         }
     }
 
-    public function delete($pass) {
+    public static function delete($id, $pass) {
+        if ($id == null) $id = $_SESSION['id'];
         $stmt = myPDO::getInstance()->prepare(<<<SQL
                                     SELECT * 
                                     FROM user
@@ -352,7 +365,7 @@ SQL
 SQL
         );
         $stmt->setFetchMode(PDO::FETCH_CLASS, __CLASS__);
-        $stmt->execute(array($_SESSION['id']));
+        $stmt->execute(array($id));
         $user = $stmt -> fetch();
         if(!$user){
             throw new Exception("utilisateur inexistant");
@@ -364,7 +377,7 @@ SQL
                                     WHERE id = ?;
 SQL
                 );
-                if ($stmt->execute(array($_SESSION['id']))) {
+                if ($stmt->execute(array($id))) {
                     return true;
                 } else {
                     throw new Exception("Erreur dans la suppression du compte");
