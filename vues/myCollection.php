@@ -32,7 +32,7 @@ $(document).ready(function(){
         select: function( event, ui ) {
             $("#addCardButton").removeClass("disabled");
             $( "#cardName-id" ).val( ui.item.uuid );
-            whatExtension(ui.item.printings);
+            whatExtension(ui.item.printings, ui.item.uuid);
         }
     }).autocomplete().data("uiAutocomplete")._renderItem = function(ul, item) { 
          var script = document.createElement("script");
@@ -42,10 +42,9 @@ $(document).ready(function(){
          return $("<li>") 
          .append(item.label + '<i class="ss ss-van" data-position="right" id="' + item.uuid + '"></i>').append(script)
          .appendTo(ul); };
-    
   });   
 
-    function whatExtension(printings) {
+    function whatExtension(printings, uuid) {
         var arr = printings.split(",");
         $("#extension").html('<option value="" disabled selected>Extension</option>');
         for(var i = 0; i < arr.length; i++) {
@@ -60,6 +59,31 @@ $(document).ready(function(){
             $('select').formSelect();
         });
         }
+        
+        $("#extension").change(function() {
+            $.ajax({
+        url: "class/getFoilParameters.php",
+        method:"GET",
+        data:'uuid='+ uuid +'&setName=' + $("#extension").val(),
+        dataType:"json",
+        })
+        .done(function(response) {
+            var textFoil = "";
+            if (response[0]["hasFoil"] == "1" && response[0]["hasNonFoil"] == "1") {
+                textFoil = "Cette carte est disponible en : Foil, Non Foil";
+                $(".switch").prop('hidden', false);
+            } else if (response[0]["hasFoil"] == "1") {
+                textFoil = "Cette carte est disponible en : Foil";
+                $("#isFoil").prop('checked', true);
+                $(".switch").prop('hidden', true);
+            } else if (response[0]["hasNonFoil"] == "1") {
+                textFoil = "Cette carte est disponible en : Non Foil";
+                $("#isFoil").prop('checked', false);
+                $(".switch").prop('hidden', true);
+            }
+            $("#foilParameters").html(textFoil);
+        });
+    });
     }
 JS
 );
@@ -98,6 +122,7 @@ $p->appendContent(<<<HTML
                  </div>
                  <div class="row">
                  <div class="col l6 s12">
+                 <p id="foilParameters"></p>
                     <div class="switch">
                      <label>
                           Non foil
