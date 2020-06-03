@@ -585,12 +585,34 @@ SQL
 
     public static function minusCard($uuid) {
         $stmt = myPDO::getInstance()->prepare(<<<SQL
+                                    SELECT number
+                                    FROM collection
+                                    WHERE UUIDCard = ? and idUser = ?;
+SQL
+        );
+        $stmt->execute(array($uuid, $_SESSION['id']));
+        $nombre = $stmt->fetch();
+        if ($nombre['number'] == 1) {
+
+            $stmt = myPDO::getInstance()->prepare(<<<SQL
+                                    DELETE FROM collection
+                                    WHERE UUIDCard = ? and idUser = ?;
+SQL
+            );
+
+            return $stmt->execute(array($uuid, $_SESSION['id']));
+
+        } else {
+
+            $stmt = myPDO::getInstance()->prepare(<<<SQL
                                     UPDATE collection
                                     SET number = number - 1
                                     WHERE UUIDCard = ? and idUser = ?;
 SQL
-        );
-        return $stmt->execute(array($uuid, $_SESSION['id']));
+            );
+
+            return $stmt->execute(array($uuid, $_SESSION['id']));
+        }
     }
 
     public static function deleteCard($uuid) {
