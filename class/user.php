@@ -438,8 +438,8 @@ SQL
             throw new Exception("Erreur dans la récupération de la carte");
         } else {
             $isFoil = ($isFoil == "Yes") ? 1 : 0;
-            if (!(($isFoil == 1 && $uuid['hasFoil'] == 1) || ($isFoil == 1 && $uuid['hasNonFoil']) == 1)) {
-                throw new Exception("Le paramètre foil de la carte que vous essayez d'insérer n'est pas valide");
+            if (!(($isFoil == 1 && $uuid['hasFoil'] == 1) || ($isFoil == 0 && $uuid['hasNonFoil']) == 1)) {
+                throw new Exception("Le paramètre foil de la carte que vous essayez d'insérer n'est pas valide : " . $isFoil . " " . $uuid['hasFoil']  . " " . $uuid['hasNonFoil']);
             }
             $stmt = myPDO::getInstance()->prepare(<<<SQL
                                     INSERT INTO collection (idUser, UUIDCard, number, isFoil)
