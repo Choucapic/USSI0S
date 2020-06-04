@@ -55,7 +55,7 @@ $(document).ready(function(){
         dataType:"json",
         })
         .done(function(response) {
-            $("#extension").append('<option value="' + response[0].name +'">' + response[0].name + ' <i class="ss ss-2x ss-' + response[0].code.toLowerCase() +'"></i> </option>');
+        $("#extension").append('<option value="' + response[0].name +'">' + response[0].name + ' <i class="ss ss-2x ss-' + response[0].code.toLowerCase() +'"></i> </option>');
             $('select').formSelect();
         });
         }
@@ -113,14 +113,15 @@ $p->appendContent(<<<HTML
                        <label for="cardName">Nom de la carte</label>
                        <input type="hidden" name="cardName" id="cardName-id">
                   </div>
+                  
                   <div class="input-field col l6 s12">
                     <select id="extension" name="extension" class="validate">
                         <option value="" disabled selected>Extension</option>
                     </select>
-    <label>Extension</label>
-  </div>
-                 </div>
-                 <div class="row">
+                    <label>Extension</label>
+                  </div>
+      </div>
+      <div class="row">
                  <div class="col l6 s12">
                  <p id="foilParameters"></p>
                     <div class="switch">
@@ -132,6 +133,7 @@ $p->appendContent(<<<HTML
                         </label>
                      </div>
                  </div>
+                 
                   <div class="input-field col l6 s12">
                      <input id="quantity" name="quantity" type="number" class="validate" min="1" step="1" required>
                        <label for="quantity">Quantité</label>

@@ -9,12 +9,12 @@ $dataArray = array();
 $stmt = myPDO::getInstance()->prepare(<<<SQL
                                     SELECT name, keyruneCode as code
                                     FROM sets
-                                    WHERE sets.code = "{$setCode}"
+                                    WHERE sets.code = ?
                                     ORDER BY name ASC;
 SQL
 );
 $stmt->setFetchMode(PDO::FETCH_ASSOC);
-$stmt->execute();
+$stmt->execute(array($setCode));
 
 while (($set = $stmt->fetch()) != false) {
     $data["name"] = $set["name"];

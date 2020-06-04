@@ -7,7 +7,7 @@ $card = true;
 $dataArray = array();
 
 $stmt = myPDO::getInstance()->prepare(<<<SQL
-                                    SELECT cards.uuid as uuid, foreign_data.name as name, scryfallId as image, printings, cards.hasFoil as hasFoil, cards.hasNonFoil as hasNonFoil
+                                    SELECT cards.uuid as uuid, foreign_data.name as name, scryfallId as image, printings
                                     FROM cards, foreign_data
                                     WHERE cards.uuid = foreign_data.uuid 
                                     AND foreign_data.language = "French"
@@ -24,8 +24,6 @@ while (($card = $stmt->fetch()) != false) {
     $data["label"] = $card["name"];
     $data["uuid"] = $card["uuid"];
     $data["image"] = $card["image"];
-    $data["hasFoil"] = $card["hasFoil"];
-    $data["hasNonFoil"] = $card["hasNonFoil"];
     $data["printings"] = $card["printings"];
     array_push($dataArray, $data);
 }
